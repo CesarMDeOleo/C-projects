@@ -17,7 +17,7 @@ int main(void) {
 
     double time_spent = 0.0;
 
-    int length = 1000000;
+    int length = 100000;
 
     srand(time(NULL));
 
