@@ -1,9 +1,6 @@
 #include <stdio.h>
-
 #include <stdlib.h>
-
 #include <string.h>
-
 #define MAX 100
 
 typedef struct Node {
@@ -26,7 +23,6 @@ int main() {
     int ssn;
     int i;
     int amount;
-
 
     printf("How many employees?\n");
     scanf("%d", &amount);
