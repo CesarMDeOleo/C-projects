@@ -3,7 +3,7 @@
 int main() {
 
     int x = 1024;
-    printf("hello word!");
+    printf("Hello Word!");
     printf("%i \n", x);
 
     return 0;
