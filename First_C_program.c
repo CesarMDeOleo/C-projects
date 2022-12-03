@@ -6,4 +6,5 @@ int main() {
     printf("hello word ");
     printf("%i \n ", x);
 
+    return 0;
 }
