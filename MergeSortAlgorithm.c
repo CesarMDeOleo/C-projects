@@ -60,7 +60,7 @@ void merge_sort(int a[], int length)
 
 void merge_sort_recursion(int a[], int l, int r)
 {
-    // we stop recursion when l >= r
+  
     if (l < r)
     {
 
@@ -69,9 +69,6 @@ void merge_sort_recursion(int a[], int l, int r)
 
         merge_sort_recursion(a, l, m);
         merge_sort_recursion(a, m + 1, r);
-
-
-
         merge_sorted_arrays(a, l, m, r);
     }
 }
