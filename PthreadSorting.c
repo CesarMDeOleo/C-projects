@@ -1,127 +1,115 @@
 #include <pthread.h>
+
 #include <stdio.h>
+
 #include <stdlib.h>
+
 #include <time.h>
 
-#define SIZE 1000000
+#define SIZE 1000
 
 int array[SIZE];
 
-
 void merge(int start, int mid, int end);
 
-void *mergeSort(void *arg);
-
+void * sorting(void * arg);
 
 int main() {
 
-    srand(time(NULL));
+  srand(time(NULL));
 
-    for (int i = 0; i < SIZE; i++) {
+  for (int i = 0; i < SIZE; i++) {
 
-        array[i] = rand() % 30000;
-    }
+    array[i] = rand() % 30000;
+  }
 
-    int data[2] = {0, SIZE - 1};
+  int data[2] = {0, SIZE - 1};
 
-    pthread_t sort_thread;
+  pthread_t sort_thread;
 
-    pthread_create(&sort_thread, NULL, mergeSort, data);
+  pthread_create( & sort_thread, NULL, sorting, data);
 
-    pthread_join(sort_thread, NULL);
+  pthread_join(sort_thread, NULL);
 
-    printf("Sorted array: ");
+  printf("Sorted array: ");
 
-    for (int i = 0; i < SIZE; i++) {
-        printf("\nnumber[%d] = %d", i, array[i]);
-    }
+  for (int i = 0; i < SIZE; i++) {
+    printf("\nnumber[%d] = %d", i, array[i]);
+  }
 
-    printf("\n");
+  printf("\n");
 
-    return 0;
+  return 0;
 
 }
-
-
-
 
 void merge(int start, int mid, int end) {
 
-    int n1 = mid - start + 1;
-    int n2 = end - mid;
-    int left[n1], right[n2];
+  int n1 = mid - start + 1;
+  int n2 = end - mid;
+  int left[n1], right[n2];
 
-    for (int i = 0; i < n1; i++) {
+  for (int i = 0; i < n1; i++) {
+    left[i] = array[start + i];
+  }
 
-        left[i] = array[start + i];
+  for (int j = 0; j < n2; j++) {
+    right[j] = array[mid + 1 + j];
+  }
 
+  int i = 0, j = 0, k = start;
+
+  while (i < n1 && j < n2) {
+    if (left[i] <= right[j]) {
+      array[k++] = left[i++];
+    } else {
+      array[k++] = right[j++];
     }
+  }
 
+  while (i < n1) {
+    array[k++] = left[i++];
+  }
 
-    for (int j = 0; j < n2; j++) {
-
-        right[j] = array[mid + 1 + j];
-
-    }
-
-
-    int i = 0, j = 0, k = start;
-
-
-    while (i < n1 && j < n2) {
-
-        if (left[i] <= right[j]) {
-
-            array[k++] = left[i++];
-
-        }
-        else {
-
-            array[k++] = right[j++];
-        }
-    }
-
-    while (i < n1) {
-
-        array[k++] = left[i++];
-    }
-
-    while (j < n2) {
-
-        array[k++] = right[j++];
-    }
+  while (j < n2) {
+    array[k++] = right[j++];
+  }
 }
 
+void * sorting(void * arg) {
 
+  int * data = (int * ) arg;
+  int start = data[0];
+  int end = data[1];
 
-void *mergeSort(void *arg) {
+  if (start < end) {
 
-    int *data = (int *)arg;
-    int start = data[0];
-    int end = data[1];
+    int mid = (start + end) / 2;
 
-    if (start < end) {
+    int left[2] = {
+      start,
+      mid
+    };
 
-        int mid = (start + end) / 2;
+    int right[2] = {
+      mid + 1,
+      end
+    };
 
-        int left[2] = {start, mid};
+    pthread_t left_thread, right_thread;
 
-        int right[2] = {mid + 1, end};
+    pthread_create( & left_thread, NULL, sorting, left);
 
-        pthread_t left_thread, right_thread;
+    pthread_create( & right_thread, NULL, sorting, right);
 
-        pthread_create(&left_thread, NULL, mergeSort, left);
+    pthread_join(left_thread, NULL);
 
-        pthread_create(&right_thread, NULL, mergeSort, right);
+    pthread_join(right_thread, NULL);
 
-        pthread_join(left_thread, NULL);
+    merge(start, mid, end);
 
-        pthread_join(right_thread, NULL);
+  }
 
-        merge(start, mid, end);
-
-    }
-
-    return NULL;
+  return NULL;
 
 }
