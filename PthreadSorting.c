@@ -86,15 +86,9 @@ void * sorting(void * arg) {
 
     int mid = (start + end) / 2;
 
-    int left[2] = {
-      start,
-      mid
-    };
+    int left[2] = {start, mid};
 
-    int right[2] = {
-      mid + 1,
-      end
-    };
+    int right[2] = {mid + 1, end};
 
     pthread_t left_thread, right_thread;
 
