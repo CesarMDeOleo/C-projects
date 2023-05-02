@@ -47,4 +47,4 @@ int main() {
     printf("Elapsed time: %f seconds\n", avg_time);
 
     return 0;
-}`
+}
